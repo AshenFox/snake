@@ -5,6 +5,8 @@ const BodySegment = (props) => {
   let {
     position: { x, y },
     segment: { height, width },
+    delay,
+    animated,
   } = props;
 
   let style = {
@@ -12,11 +14,14 @@ const BodySegment = (props) => {
     left: x + "px",
     height: height + "px",
     width: width + "px",
+    animationDelay: `${delay}s`,
   };
 
   return (
     <div
-      className='snake__body-segment snake__body-segment--1'
+      className={`snake__body-segment snake__body-segment--1 ${
+        animated ? "puls" : ""
+      }`}
       style={style}
     ></div>
   );

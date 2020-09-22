@@ -10,18 +10,37 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  // font-family: "Press Start 2P", cursive;
+  // font-family: Montserrat, sans-serif;
+  // Dancing Script,cursive;
+  font-family: Dancing Script, cursive;
+  font-weight: 700;
+  font-size: 16px;
+  color: $white;
+  letter-spacing: 1px;
+}
+
 *,
 *::after,
-*::before {
+*::before,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h7 {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
+  border: 0;
 }
 
 a {
   display: inline-block;
   text-decoration: none;
-  color: $white;
+  color: inherit;
 }
 
 ul,
@@ -32,33 +51,131 @@ li {
 }
 
 .container {
+  position: relative;
   height: 100vh;
   width: 100vw;
-  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+}
+
+.logo {
+  margin-bottom: 1rem;
+  font-size: 45px;
+}
+
+.score {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  min-width: 510px;
+}
+
+.main-menu {
+  min-width: 300px;
+
+  &__item {
+    text-align: center;
+    margin-bottom: 0.75rem;
+
+    &:hover {
+      color: yellow;
+    }
+  }
+}
+
+.score-menu {
+  min-width: 300px;
+  margin-bottom: 1rem;
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  &__date {
+    margin-right: 1rem;
+  }
+}
+
+.btn {
+  background-color: inherit;
+  color: $white;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    color: red;
+  }
 }
 
 .game-area {
   border: 5px solid $white;
+  border-radius: 10px;
   height: 510px;
   width: 510px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+  p {
+    z-index: 10;
+  }
 }
 
-@mixin rect {
+@mixin shape {
   position: absolute;
-  background-color: red;
-  height: 20px;
-  width: 20px;
-  border: 2px solid black;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 80%;
+    width: 80%;
+    background-color: $white;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 5px rgba($white, 0.3);
+  }
+}
+
+.puls {
+  &::after {
+    animation: puls 4s infinite;
+    animation-delay: inherit;
+    animation-timing-function: ease;
+  }
+}
+
+@keyframes puls {
+  0% {
+    box-shadow: 0px 0px 6px 2px rgba($white, 0.3);
+  }
+  60% {
+    box-shadow: 0px 0px 6px 6px rgba($white, 0.3);
+  }
+
+  100% {
+    box-shadow: 0px 0px 6px 2px rgba($white, 0.3);
+  }
 }
 
 .food {
-  @include rect;
+  @include shape;
 }
 
 .snake__body-segment {
-  @include rect;
+  @include shape;
 }

@@ -1,4 +1,6 @@
 export default {
+  currentScore: 0,
+  isPaused: true,
   step: 20,
   ratio: 0.1,
   direction: [0, -1],
@@ -32,7 +34,7 @@ export default {
     height: 500,
     width: 500,
   },
-  border_width: 5,
+  border_width: 3,
   segment: {
     height: 20,
     width: 20,

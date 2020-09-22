@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, Fragment } from "react";
+import React, { useEffect, useRef } from "react";
 import Food from "./Food";
 import Snake from "./Snake";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { moveSnake } from "../actions/mainActions";
+import { moveSnake, pauseGame, resetGame } from "../actions/mainActions";
 
-const GameArea = ({ main, moveSnake }) => {
-  const { direction, positions, ratio, area, border_width } = main;
+const GameArea = ({ main, moveSnake, pauseGame, resetGame }) => {
+  const { direction, positions, ratio, area, border_width, isPaused } = main;
 
   const animationRef = useRef();
   const startRef = useRef(false);
@@ -17,7 +17,12 @@ const GameArea = ({ main, moveSnake }) => {
   const directionNewSecondRef = useRef(false);
 
   useEffect(() => {
-    document.addEventListener("keydown", onKeyDown);
+    document.body.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      resetGame();
+      document.body.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   useEffect(() => {
@@ -28,8 +33,9 @@ const GameArea = ({ main, moveSnake }) => {
     } else {
       directionNewFirstRef.current = direction;
     }
-    animationRef.current = requestAnimationFrame(callback);
-  }, [positions]);
+
+    if (!isPaused) animationRef.current = requestAnimationFrame(callback);
+  }, [positions, isPaused]);
 
   const callback = (timestamp) => {
     if (!startRef.current) startRef.current = timestamp;
@@ -43,7 +49,7 @@ const GameArea = ({ main, moveSnake }) => {
       return;
     }
 
-    animationRef.current = requestAnimationFrame(callback);
+    if (!isPaused) animationRef.current = requestAnimationFrame(callback);
   };
 
   const checkDirEqual = (dir1, dir2) => {
@@ -52,6 +58,11 @@ const GameArea = ({ main, moveSnake }) => {
 
   const onKeyDown = (e) => {
     let keyCode = e.keyCode;
+
+    if (keyCode === 32) {
+      pauseGame();
+      return;
+    }
 
     let oldDirection;
     let number;
@@ -100,9 +111,10 @@ const GameArea = ({ main, moveSnake }) => {
   };
 
   return (
-    <div className='game-area' style={style}>
+    <div className='game-area' style={style} onKeyDown={onKeyDown}>
       <Food />
       <Snake />
+      {isPaused ? <p>Pause</p> : ""}
     </div>
   );
 };
@@ -115,4 +127,6 @@ const mapStateToProps = (state) => ({
   main: state.main,
 });
 
-export default connect(mapStateToProps, { moveSnake })(GameArea);
+export default connect(mapStateToProps, { moveSnake, pauseGame, resetGame })(
+  GameArea
+);

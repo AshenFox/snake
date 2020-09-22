@@ -1,4 +1,11 @@
-import { SPAWN_FOOD, MOVE_SNAKE } from "./types";
+import {
+  SPAWN_FOOD,
+  MOVE_SNAKE,
+  PAUSE,
+  RESET_SCORE,
+  CHANGE_SCORE,
+  RESET_GAME,
+} from "./types";
 import initialState from "../reducers/mainInitState";
 
 // Spawn food
@@ -16,7 +23,7 @@ const spawnFood = (positions, state) => {
     if (position.x === x && position.y === y)
       return spawnFood(positions, state);
   }
-  console.log("fire!");
+
   return {
     type: SPAWN_FOOD,
     payload: {
@@ -30,13 +37,14 @@ const spawnFood = (positions, state) => {
 
 export const moveSnake = (newDirection) => (dispatch, getState) => {
   const { main } = getState();
-  let { positions } = main;
+  let { positions, currentScore } = main;
 
   let newPositions = createNewPositions(positions, newDirection, main);
 
   if (!checkCollision(newPositions, main)) {
     if (checkFood(newPositions, main)) {
       growSnake(positions, newPositions);
+      dispatch(changeScore(currentScore));
       dispatch(spawnFood(newPositions, main));
     }
 
@@ -50,8 +58,11 @@ export const moveSnake = (newDirection) => (dispatch, getState) => {
   } else {
     const { positions, direction } = initialState;
 
-    dispatch(spawnFood(positions, main));
+    saveScore(currentScore);
 
+    dispatch(pauseGame());
+    dispatch(resetScore());
+    dispatch(spawnFood(positions, main));
     dispatch({
       type: MOVE_SNAKE,
       payload: {
@@ -61,6 +72,44 @@ export const moveSnake = (newDirection) => (dispatch, getState) => {
     });
   }
 };
+
+// Pause
+
+export const pauseGame = () => ({ type: PAUSE });
+
+// Change score
+
+export const changeScore = (currentScore) => {
+  currentScore += 20;
+
+  return {
+    type: CHANGE_SCORE,
+    payload: {
+      currentScore,
+    },
+  };
+};
+
+// Change score
+
+export const resetScore = () => ({ type: RESET_SCORE });
+
+// Reset game
+
+export const resetGame = () => {
+  const { direction, positions, food, currentScore } = initialState;
+  return {
+    type: RESET_GAME,
+    payload: {
+      direction,
+      positions,
+      food,
+      currentScore,
+    },
+  };
+};
+
+// Supplemental functions ----
 
 const growSnake = (positions, newPositions) => {
   let tail = positions[positions.length - 1];
@@ -118,3 +167,78 @@ const checkFood = (positions, state) => {
   if (food.x === head.x && food.y === head.y) return true;
   return false;
 };
+
+// Save score to local storage
+
+/* let json = JSON.stringify([
+  {
+    date: new Date(),
+    score: 650,
+  },
+  {
+    date: new Date(),
+    score: 550,
+  },
+  {
+    date: new Date(),
+    score: 500,
+  },
+
+  {
+    date: new Date(),
+    score: 450,
+  },
+
+  {
+    date: new Date(),
+    score: 400,
+  },
+
+  {
+    date: new Date(),
+    score: 350,
+  },
+]); */
+
+const saveScore = (currentScore) => {
+  if (currentScore <= 0) return;
+
+  const newPosition = {
+    date: new Date(),
+    score: currentScore,
+  };
+
+  let scoreArr = JSON.parse(localStorage.getItem("score"));
+  if (!scoreArr) scoreArr = [];
+  console.log(scoreArr);
+
+  let inserted = false;
+
+  for (let i = 0; i < scoreArr.length; i++) {
+    let itemScore = scoreArr[i].score;
+    if (itemScore < currentScore) {
+      scoreArr.splice(i, 0, newPosition);
+      inserted = true;
+      break;
+    }
+  }
+
+  if (!inserted) scoreArr.push(newPosition);
+
+  console.log(scoreArr);
+
+  if (scoreArr.length > 5) scoreArr = scoreArr.slice(0, 5);
+
+  console.log(scoreArr);
+
+  localStorage.setItem("score", JSON.stringify(scoreArr));
+};
+
+/* 
+
+
+if (i + 1 === scoreArr.length) {
+      
+      break;
+    }
+*/

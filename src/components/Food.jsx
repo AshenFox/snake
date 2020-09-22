@@ -15,7 +15,7 @@ const Food = ({ main }) => {
     width: width + "px",
   };
 
-  return <div className='food' style={style}></div>;
+  return <div className='food puls' style={style}></div>;
 };
 
 Food.propTypes = {

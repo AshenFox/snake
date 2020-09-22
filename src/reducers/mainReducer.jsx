@@ -1,4 +1,11 @@
-import { SPAWN_FOOD, MOVE_SNAKE } from "../actions/types";
+import {
+  SPAWN_FOOD,
+  MOVE_SNAKE,
+  PAUSE,
+  CHANGE_SCORE,
+  RESET_SCORE,
+  RESET_GAME,
+} from "../actions/types";
 import initialState from "./mainInitState";
 
 export default (state = initialState, action) => {
@@ -16,6 +23,34 @@ export default (state = initialState, action) => {
         ...state,
         direction: payload.direction,
         positions: payload.positions,
+      };
+
+    case PAUSE:
+      return {
+        ...state,
+        isPaused: !state.isPaused,
+      };
+
+    case CHANGE_SCORE:
+      return {
+        ...state,
+        currentScore: payload.currentScore,
+      };
+
+    case RESET_SCORE:
+      return {
+        ...state,
+        currentScore: 0,
+      };
+
+    case RESET_GAME:
+      const { direction, positions, food, currentScore } = payload;
+      return {
+        ...state,
+        direction,
+        positions,
+        food,
+        currentScore,
       };
 
     default:
