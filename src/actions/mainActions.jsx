@@ -19,7 +19,6 @@ const spawnFood = (positions, state) => {
   let y = crude_y - (crude_y % segment.height);
 
   for (let position of positions) {
-    // potential problem
     if (position.x === x && position.y === y)
       return spawnFood(positions, state);
   }
@@ -209,22 +208,22 @@ const saveScore = (currentScore) => {
   };
 
   let scoreArr = JSON.parse(localStorage.getItem("score"));
-  if (!scoreArr) scoreArr = [];
-  console.log(scoreArr);
+  if (!scoreArr || scoreArr.length === 0) {
+    scoreArr = [];
+    scoreArr.push(newPosition);
+  } else {
+    for (let i = 0; i < scoreArr.length; i++) {
+      let itemScore = scoreArr[i].score;
+      if (itemScore < currentScore) {
+        scoreArr.splice(i, 0, newPosition);
+        break;
+      }
 
-  let inserted = false;
-
-  for (let i = 0; i < scoreArr.length; i++) {
-    let itemScore = scoreArr[i].score;
-    if (itemScore < currentScore) {
-      scoreArr.splice(i, 0, newPosition);
-      inserted = true;
-      break;
+      if (i === scoreArr.length - 1 && i < 4) {
+        scoreArr.push(newPosition);
+      }
     }
   }
-
-  if (!inserted) scoreArr.push(newPosition);
-
   console.log(scoreArr);
 
   if (scoreArr.length > 5) scoreArr = scoreArr.slice(0, 5);

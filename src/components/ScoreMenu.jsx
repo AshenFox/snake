@@ -1,35 +1,25 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import ScoreMenuItem from "./ScoreMenuItem";
 
 const ScoreMenu = () => {
+  let scoreArr = JSON.parse(localStorage.getItem("score"));
+  let empty = false;
+  if (scoreArr.length === 0) empty = true;
   return (
     <>
       <ul className='score-menu'>
-        <li className='score-menu__item'>
-          <p className='score-menu__data'>
-            <span className='score-menu__number'>1. - </span>
-            <span className='score-menu__date'>16:27 - 26.08.2020</span>
-          </p>
-          <span className='score-menu__score'> --- 650 points</span>
-        </li>
-
-        <li className='score-menu__item'>
-          <p className='score-menu__data'>
-            <span className='score-menu__number'>2. - </span>
-            <span className='score-menu__date'>16:27 - 26.08.2020</span>
-          </p>
-          <span className='score-menu__score'> --- 625 points</span>
-        </li>
-
-        <li className='score-menu__item'>
-          <p className='score-menu__data'>
-            <span className='score-menu__number'>3. - </span>
-            <span className='score-menu__date'>16:27 - 26.08.2020</span>
-          </p>
-          <span className='score-menu__score'> --- 500 points</span>
-        </li>
+        {empty ? (
+          <li className='score-menu__item'>--- No records yet ---</li>
+        ) : (
+          scoreArr.map((scoreItem, i) => {
+            const { date, score } = scoreItem;
+            return (
+              <ScoreMenuItem key={i} id={i + 1} date={date} score={score} />
+            );
+          })
+        )}
       </ul>
-
       <Link to='/' className='btn'>
         Return
       </Link>

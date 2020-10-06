@@ -7,6 +7,7 @@ const BodySegment = (props) => {
     segment: { height, width },
     delay,
     animated,
+    ratio,
   } = props;
 
   let style = {
@@ -15,6 +16,7 @@ const BodySegment = (props) => {
     height: height + "px",
     width: width + "px",
     animationDelay: `${delay}s`,
+    transitionDuration: `${ratio}s`,
   };
 
   return (

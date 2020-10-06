@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const Snake = ({ main }) => {
-  let { positions, segment } = main;
+  let { positions, segment, ratio } = main;
 
   let segmentsNumber = useRef(positions.length);
   let animated = useRef(true);
@@ -31,6 +31,7 @@ const Snake = ({ main }) => {
           segment={segment}
           delay={i * 0.1}
           animated={animated.current}
+          ratio={ratio}
         />
       ))}
     </Fragment>

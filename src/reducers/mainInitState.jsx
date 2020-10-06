@@ -3,36 +3,36 @@ export default {
   isPaused: true,
   step: 20,
   ratio: 0.1,
-  direction: [0, -1],
+  direction: [0, 1],
   positions: [
     {
-      x: 400,
-      y: 360,
+      x: 40,
+      y: 100,
     },
     {
-      x: 400,
-      y: 380,
+      x: 40,
+      y: 80,
     },
     {
-      x: 400,
-      y: 400,
+      x: 40,
+      y: 60,
     },
     {
-      x: 400,
-      y: 420,
+      x: 40,
+      y: 40,
     },
     {
-      x: 400,
-      y: 440,
+      x: 40,
+      y: 20,
     },
   ],
   food: {
-    x: 100,
-    y: 100,
+    x: 200,
+    y: 200,
   },
   area: {
-    height: 500,
-    width: 500,
+    height: 300,
+    width: 300,
   },
   border_width: 3,
   segment: {
