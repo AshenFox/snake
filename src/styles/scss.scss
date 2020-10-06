@@ -52,8 +52,6 @@ li {
 
 .container {
   position: relative;
-  height: 100vh;
-  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,7 +74,7 @@ li {
   margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
-  min-width: 510px;
+  min-width: 300px;
 }
 
 .main-menu {
@@ -95,6 +93,7 @@ li {
 .score-menu {
   min-width: 300px;
   margin-bottom: 1rem;
+  text-align: center;
 
   &__item {
     display: flex;

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import store from "./store";
 import MainMenu from "./components/MainMenu";
 import Game from "./components/Game";
@@ -25,10 +25,15 @@ const App = () => {
     });
   }, []);
 
+  let style = {
+    width: `${document.documentElement.clientWidth}px`,
+    height: `${document.documentElement.clientHeight}px`,
+  };
+
   return (
     <Router>
       <Provider store={store}>
-        <div className='container'>
+        <div className='container' style={style}>
           <h1 className='logo'>Snake</h1>
           <Switch>
             <Route exact path='/'>

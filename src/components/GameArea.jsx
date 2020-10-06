@@ -90,7 +90,6 @@ const GameArea = ({ main, moveSnake, pauseGame, resetGame }) => {
     } else if (keyCode === 40) {
       newDirection = [0, -1];
     }
-    console.log(newDirection);
 
     if (!newDirection || checkDirEqual(newDirection, oldDirection)) return;
 
