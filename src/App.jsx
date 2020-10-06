@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import GameArea from "./components/GameArea";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import store from "./store";

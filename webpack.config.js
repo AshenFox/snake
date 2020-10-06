@@ -118,13 +118,11 @@ module.exports = {
     hot: isDev,
     liveReload: true,
     watchContentBase: true,
-    historyApiFallback: true,
   },
   devtool: isDev ? "source-map" : "",
   output: {
     filename: filename("js"),
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
   },
   plugins: plugins(),
   module: {
